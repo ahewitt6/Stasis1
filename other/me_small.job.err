@@ -1,0 +1,136 @@
+Input Notebook:  /pub/ahewitt1/Stasis/Stasis_prym/Alec_gradient_descent0.ipynb
+Output Notebook: /pub/ahewitt1/Stasis/Stasis_prym/output_notebook_grad_descent_19.ipynb
+Executing:   0%|          | 0/10 [00:00<?, ?cell/s]Executing notebook with kernel: python3
+Executing:  10%|█         | 1/10 [00:25<03:48, 25.33s/cell]Executing:  80%|████████  | 8/10 [03:18<00:49, 24.84s/cell]Executing:  80%|████████  | 8/10 [03:19<00:49, 24.97s/cell]
+Traceback (most recent call last):
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/bin/papermill", line 8, in <module>
+    sys.exit(papermill())
+             ^^^^^^^^^^^
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/click/decorators.py", line 34, in new_func
+    return f(get_current_context(), *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/papermill/cli.py", line 235, in papermill
+    execute_notebook(
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/papermill/execute.py", line 131, in execute_notebook
+    raise_for_execution_errors(nb, output_path)
+  File "/dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/papermill/execute.py", line 251, in raise_for_execution_errors
+    raise error
+papermill.exceptions.PapermillExecutionError: 
+---------------------------------------------------------------------------
+Exception encountered at "In [8]":
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+Cell In[8], line 35
+     23 print(params)
+     24 '''chi2 = chi2_fn(params)
+     25 with open(file_name, "a") as ff:
+     26     ff.write(f"{gamma} {delta} {alpha} {delm} {m0} {fplas} {f} {Tend} {Nspecies} {chi2}\n")
+   (...)     32         ff.write(f"{params[0]} {params[1]} {params[2]} {params[3]} {params[4]} {params[5]} {params[6]} {params[7]} {params[8]} {chi2}\n")
+     33         ff.flush()'''
+---> 35 adagrad_minimize(chi2_fn, params, lr=0.1, epsilon=1e-4, max_iters=1000, tol=1e-6, verbose=True)
+
+Cell In[6], line 7, in adagrad_minimize(chi2_fn, params_init, lr, epsilon, max_iters, tol, verbose)
+      4 G = np.zeros_like(params)
+      6 for t in range(1, max_iters + 1):
+----> 7     grad = grad_chi2(chi2_fn, params)
+      8     G += grad ** 2
+      9     adjusted_grad = grad / (np.sqrt(G) + epsilon)
+
+Cell In[5], line 41, in grad_chi2(chi2_fn, params, eps)
+     39 dparams = np.zeros_like(params)
+     40 dparams[i] = eps
+---> 41 grad[i] = (chi2_fn(params + dparams) - chi2_fn(params - dparams)) / (2 * eps)
+     42 if i==2:
+     43     print('mass before: ',params[i],' mass after: ',params[i]+dparams[i],'. These should be different. gradient: ',grad[i])
+
+Cell In[5], line 29, in chi2_fn(params)
+     23 PRyMini.stasis_params['N_SPECIES'] = int(params[6])
+     24 #print(PRyMini.stasis_params)
+     25 #predictions = model(params)
+     26 #residuals = (predictions - X_obs) / errors
+     27 #sum(((X_th-X_obs)/sigma_X)**2)
+     28 #calculate theoretical values
+---> 29 results = test_main.PRyMclass().PRyMresults()
+     30 Neff, Omeganurel, OneOverOmeganunr, YPCMB, YPBBN, DoHx1e5, He3oHx1e5, Li7oHx1e10 = results
+     31 #X_th = np.array([Neff, Omeganurel, OneOverOmeganunr, YPCMB, YPBBN, DoHx1e5, He3oHx1e5, Li7oHx1e10])
+
+File /dfs6/pub/ahewitt1/Stasis/Stasis_prym/PRyM/test_main3.py:166, in PRyMclass.__init__(self, my_rho_NP, my_p_NP, my_drho_NP_dT, my_delta_rho_NP, stasis_params)
+    156     self.Tnu_vec = sol_thermo_uMat[:,1]
+    158 else:
+    159     # sol_thermo = solve_ivp(self.dTtotdt,[tini,tfin],Tini_vec,t_eval=sol_thermo_sampling,method='LSODA',rtol=1.e-6,atol=1.e-9)
+    160     # sol_thermo = solve_ivp(self.dTtotdt,[tini,tfin],Tini_vec,t_eval=sol_thermo_sampling,method='BDF',rtol=1.e-6,atol=1.e-9)
+   (...)    164 
+    165     # sol_thermo = solve_ivp(self.rhs,(tini, tfin),y0,t_eval=sol_thermo_sampling,method='LSODA',rtol=1.e-6,atol=1.e-9)
+--> 166     sol_thermo = solve_ivp(self.rhs,(tini, tfin),y0,t_eval=sol_thermo_sampling,method='BDF',rtol=1.e-6,atol=1.e-9)
+    169     # self.t_vec = sol_thermo.t
+    170     # self.Tg_vec = sol_thermo.y[0][:]
+    171     # self.Tnu_vec = sol_thermo.y[1][:]
+    172     self.t_vec   = sol_thermo.t
+
+File /dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/scipy/integrate/_ivp/ivp.py:655, in solve_ivp(fun, t_span, y0, method, t_eval, dense_output, events, vectorized, args, **options)
+    653 status = None
+    654 while status is None:
+--> 655     message = solver.step()
+    657     if solver.status == 'finished':
+    658         status = 0
+
+File /dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/scipy/integrate/_ivp/base.py:197, in OdeSolver.step(self)
+    195 else:
+    196     t = self.t
+--> 197     success, message = self._step_impl()
+    199     if not success:
+    200         self.status = 'failed'
+
+File /dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/scipy/integrate/_ivp/bdf.py:363, in BDF._step_impl(self)
+    361 while not converged:
+    362     if LU is None:
+--> 363         LU = self.lu(self.I - c * J)
+    365     converged, n_iter, y_new, d = solve_bdf_system(
+    366         self.fun, t_new, y_predict, c, psi, LU, self.solve_lu,
+    367         scale, self.newton_tol)
+    369     if not converged:
+
+File /dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/scipy/integrate/_ivp/bdf.py:232, in BDF.__init__.<locals>.lu(A)
+    230 def lu(A):
+    231     self.nlu += 1
+--> 232     return lu_factor(A, overwrite_a=True)
+
+File /dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/scipy/_lib/_util.py:1226, in _apply_over_batch.<locals>.decorator.<locals>.wrapper(*args, **kwargs)
+   1224 # Early exit if call is not batched
+   1225 if not any(batch_shapes):
+-> 1226     return f(*arrays, *other_args, **kwargs)
+   1228 # Determine broadcasted batch shape
+   1229 batch_shape = np.broadcast_shapes(*batch_shapes)  # Gives OK error message
+
+File /dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/scipy/linalg/_decomp_lu.py:109, in lu_factor(a, overwrite_a, check_finite)
+     24 """
+     25 Compute pivoted LU decomposition of a matrix.
+     26 
+   (...)    106 True
+    107 """
+    108 if check_finite:
+--> 109     a1 = asarray_chkfinite(a)
+    110 else:
+    111     a1 = asarray(a)
+
+File /dfs6/pub/ahewitt1/Stasis/.venv/lib64/python3.11/site-packages/numpy/lib/_function_base_impl.py:646, in asarray_chkfinite(a, dtype, order)
+    644 a = asarray(a, dtype=dtype, order=order)
+    645 if a.dtype.char in typecodes['AllFloat'] and not np.isfinite(a).all():
+--> 646     raise ValueError(
+    647         "array must not contain infs or NaNs")
+    648 return a
+
+ValueError: array must not contain infs or NaNs
+
