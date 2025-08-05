@@ -10,8 +10,8 @@
 #SBATCH --nodes=1            ## use 1 node, don't ask for multiple
 #SBATCH --ntasks=1           ## ask for 1 CPU
 #SBATCH --mem-per-cpu=36G     ## ask for 1Gb memory per CPU
-#SBATCH --error=/pub/ahewitt1/Stasis/Stasis_prym/me_small.job.err    ## Slurm error  file, %x - job name, %A job id
-#SBATCH --out=/pub/ahewitt1/Stasis/Stasis_prym/me_small.job.out      ## Slurm output file, %x - job name, %A job id
+#SBATCH --error=/pub/ahewitt1/Stasis_new/me_small.job.err    ## Slurm error  file, %x - job name, %A job id
+#SBATCH --out=/pub/ahewitt1/Stasis_new/me_small.job.out      ## Slurm output file, %x - job name, %A job id
 
 # Run command hostname and assign output to a variable
 hn=`hostname`
@@ -49,7 +49,7 @@ source /pub/ahewitt1/Stasis/.venv/bin/activate
 #for i in {0..4}
 #do
 #        #papermill /pub/ahewitt1/Git_Felix_9_24_24/FORESEE-main/Models/HNL/Alec/gen_faser_atlas_events4.ipynb /pub/ahewitt1/Git_Felix_9_24_24/FORESEE-main/Models/HNL/Alec/output_notebook_ind_maj.ipynb -p ind $i -p majorana $True --kernel python3
-papermill /pub/ahewitt1/Stasis/Stasis_prym/Alec_gradient_descent0.ipynb /pub/ahewitt1/Stasis/Stasis_prym/output_notebook_grad_descent_19.ipynb
+papermill /pub/ahewitt1/Stasis_new/Stasis1/Alec_gradient_descent2.ipynb /pub/ahewitt1/Stasis_new/Stasis1/output_notebook_grad_descent_3.ipynb
 #        #--kernel python3
 #done
 
